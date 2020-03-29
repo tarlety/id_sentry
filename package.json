@@ -1,0 +1,19 @@
+{
+  "name": "id-sentry",
+  "version": "1.0.0",
+  "description": "Simple Application to Record ID",
+  "repository": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "electron app.js"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^3.0.2"
+  },
+  "dependencies": {
+    "crypto": "^1.0.1",
+    "electron-store": "^5.1.1",
+    "jquery": "^3.4.1"
+  }
+}
