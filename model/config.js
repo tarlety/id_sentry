@@ -15,8 +15,8 @@ const config = {
   login_id_hash: hash(default_domain_id + default_login_id),
   login_uid_hash: hash(default_domain_id + default_login_uid),
   login_pwd_hash: hash(default_domain_id + default_pwd),
-  enable_encrypt_data: false,
-  prod: false
+  enable_encrypt_data: true,
+  prod: true
 };
 
 module.exports = config;
