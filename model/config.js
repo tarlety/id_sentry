@@ -1,3 +1,4 @@
+const { UID_FORMAT } = require('../js/uid');
 const hash = require('../js/challenge');
 const Store = require('electron-store');
 
@@ -5,18 +6,30 @@ const config_store = new Store({
   name: 'id-sentry-config'
 });
 
-const default_domain_id = '000-000-00';
-const default_login_id = 'A123456789';
-const default_login_uid = 'FFFFFFFE';
-const default_pwd = 'REALLYBAD';
+let config = config_store.get('config');
 
-const config = {
-  domain_id: default_domain_id,
-  login_id_hash: hash(default_domain_id + default_login_id),
-  login_uid_hash: hash(default_domain_id + default_login_uid),
-  login_pwd_hash: hash(default_domain_id + default_pwd),
-  enable_encrypt_data: true,
-  prod: true
-};
+if (!config) {
+  const default_node_id = '000-000-00';
+  const default_nonce = 'ABD910FE';
+
+  config = {
+    version: 1,
+    node_id: default_node_id,
+    nonce: default_nonce,
+    login_ids_hash: ['A123456789'].map(id =>
+      hash(default_node_id + default_nonce + id)
+    ),
+    login_uids_hash: ['FFFFFFFE', '00112233'].map(uid =>
+      hash(default_node_id + default_nonce + uid)
+    ),
+    login_pwd_hash: hash(default_node_id + default_nonce + 'PLZIGNOREME'),
+    reader_type: UID_FORMAT.LE_HEX,
+    enable_hash_data: false,
+    enable_encrypt_data: false,
+    prod: false
+  };
+
+  config_store.set('config', config);
+}
 
 module.exports = config;
