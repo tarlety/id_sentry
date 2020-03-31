@@ -5,6 +5,7 @@ const TEXT = {
   INVALID_UID: '非管理者晶片卡',
   INVALID_UID_IN_CONFIG: '無法識別讀卡機規格',
   SCAN_PASSWORD: '掃描通行碼',
+  PASSWORDING: '掃描通行碼中...',
   INVALID_PASSWORD: '通行失敗',
   SCAN_INIT: '請掃描身份證條碼或感應晶片卡',
   SCAN_WAITING: '掃描中...',

@@ -4,10 +4,10 @@
   "version": "1.0.0",
   "description": "Simple Application to Record ID",
   "repository": "",
-  "main": "app.js",
+  "main": "src",
   "scripts": {
-    "start": "electron app.js",
-    "package:win": "electron-packager app.js --overwrite --platform=win32 --arch=ia32 --out=out --icon=res/icon.png"
+    "start": "electron src",
+    "package:win": "electron-packager . --overwrite --platform=win32 --arch=ia32 --out=out --icon=res/icon.png"
   },
   "license": "ISC",
   "devDependencies": {

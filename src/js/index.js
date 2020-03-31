@@ -309,9 +309,10 @@ function render() {
       break;
     case STATE.PWD_WAITING_INIT:
       $('#info').text(TEXT.SCAN_PASSWORD);
-      $('#warning').text('');
       break;
     case STATE.PWD_WAITING:
+      $('#info').text(TEXT.PASSWORD_SCANNING);
+      $('#warning').text('');
       break;
     case STATE.PWD_INVALID:
       $('#warning').text(TEXT.INVALID_PASSWORD);
@@ -319,6 +320,7 @@ function render() {
     case STATE.ID_SCAN_INIT:
       $('#info').text(TEXT.SCAN_INIT);
       $('#info').removeClass('info-scanning');
+      $('#count').text( TEXT.SCAN_COUNT_PRE + countValidRecords() + TEXT.SCAN_COUNT_POST);
       break;
     case STATE.ID_SCAN:
       $('#info').text(TEXT.SCAN_WAITING);
@@ -333,7 +335,4 @@ function render() {
     default:
       break;
   }
-  $('#count').text(
-    TEXT.SCAN_COUNT_PRE + countValidRecords() + TEXT.SCAN_COUNT_POST
-  );
 }
