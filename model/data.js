@@ -4,7 +4,7 @@ const Store = require('electron-store');
 const dt = new Date();
 
 const data = new Store({
-  name: 'id-sentry-data-' + config.node_id + dt.toJSON(),
+  name: 'id-sentry-data-' + config.node_id + '-' + dt.toJSON(),
   encryptionKey: config.enable_encrypt_data ? config.login_pwd_hash : null,
   schema: {
     version: { type: 'number', maximum: 100, minimum: 1, default: 1 },
