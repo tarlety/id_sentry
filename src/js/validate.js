@@ -29,7 +29,7 @@ function validate_uid_format(uid) {
 
 function validate_cardid_format(cardid) {
   if (cardid.length == 12 || cardid.length == 16) {
-    cardid.replace(/[0-9/g, '') == '') return true;
+    if ( cardid.replace(/[0-9]/g, '') == '') return true;
   }
   return false;
 }
