@@ -1,9 +1,18 @@
 const config = require('./model/config');
 const hash = require('./js/challenge');
-const { validate_id_format, validate_uid_format,validate_cardid_format } = require('./js/validate');
+const {
+  validate_id_format,
+  validate_uid_format,
+  validate_cardid_format
+} = require('./js/validate');
 const { UID_FORMAT, uid_formalize_le_hex } = require('./js/uid');
 const STATE = require('./js/state');
-const { addRecord, getLastRecord, getRecords } = require('./model/data');
+const {
+  initRecords,
+  addRecord,
+  getLastRecord,
+  getRecords
+} = require('./model/data');
 const { node_name } = require('./res/node_name');
 const TEXT = require('./res/strings');
 
@@ -91,6 +100,7 @@ function state_fast_forwarding() {
   }
   if (next_state == STATE.PWD_WAITING_INIT) {
     if (!config.login_pwd_hash || config.login_pwd_hash == '') {
+      initRecords('');
       next_state = STATE.ID_SCAN_INIT;
     }
   }
@@ -223,6 +233,7 @@ function sm(e) {
         next_state = STATE.PWD_WAITING;
       } else if (e.keyCode == 13) {
         if (challenge_pwd(state.login.pwd)) {
+          initRecords(state.login.pwd);
           next_state = STATE.ID_SCAN_INIT;
         } else {
           next_state = STATE.PWD_INVALID;
@@ -265,6 +276,7 @@ function sm(e) {
       }
       break;
     default:
+      next_state = STATE.END_OF_PROGRAM;
       break;
   }
 
@@ -323,7 +335,9 @@ function render() {
     case STATE.ID_SCAN_INIT:
       $('#info').text(TEXT.SCAN_INIT);
       $('#info').removeClass('info-scanning');
-      $('#count').text( TEXT.SCAN_COUNT_PRE + countValidRecords() + TEXT.SCAN_COUNT_POST);
+      $('#count').text(
+        TEXT.SCAN_COUNT_PRE + countValidRecords() + TEXT.SCAN_COUNT_POST
+      );
       break;
     case STATE.ID_SCAN:
       $('#info').text(TEXT.SCAN_WAITING);
