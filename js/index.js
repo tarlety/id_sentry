@@ -94,14 +94,17 @@ function state_fast_forwarding() {
       next_state = STATE.ID_SCAN_INIT;
     }
   }
-  if (next_state == STATE.UID_INVALID) {
+  if (next_state == STATE.ID_INVALID) {
     next_state = STATE.ID_WAITING_ALPHABET;
+  }
+  if (next_state == STATE.UID_INVALID) {
+    next_state = STATE.UID_WAITING_INIT;
   }
   if (next_state == STATE.UID_INVALID_CONFIG) {
     next_state = STATE.DEINIT;
   }
   if (next_state == STATE.PWD_INVALID) {
-    next_state = STATE.ID_WAITING_ALPHABET;
+    next_state = STATE.PWD_WAITING_INIT;
   }
   if (next_state == STATE.ID_SCAN_INVALID) {
     next_state = STATE.ID_SCAN_INIT;
@@ -290,8 +293,6 @@ function render() {
       break;
     case STATE.ID_INVALID:
       $('#warning').text(TEXT.INVALID_ID);
-      state.state = STATE.ID_WAITING_ALPHABET;
-      render();
       break;
     case STATE.UID_WAITING_INIT:
       $('#info').text(TEXT.SCAN_RFID_CARD);
@@ -314,8 +315,6 @@ function render() {
       break;
     case STATE.PWD_INVALID:
       $('#warning').text(TEXT.INVALID_PASSWORD);
-      state.state = STATE.ID_WAITING_ALPHABET;
-      render();
       break;
     case STATE.ID_SCAN_INIT:
       $('#info').text(TEXT.SCAN_INIT);
