@@ -27,4 +27,11 @@ function validate_uid_format(uid) {
   return false;
 }
 
-module.exports = { validate_id_format, validate_uid_format };
+function validate_cardid_format(cardid) {
+  if (cardid.length == 12 || cardid.length == 16) {
+    cardid.replace(/[0-9/g, '') == '') return true;
+  }
+  return false;
+}
+
+module.exports = { validate_id_format, validate_uid_format, validate_cardid_format };

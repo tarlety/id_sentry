@@ -1,6 +1,6 @@
 const config = require('./model/config');
 const hash = require('./js/challenge');
-const { validate_id_format, validate_uid_format } = require('./js/validate');
+const { validate_id_format, validate_uid_format,validate_cardid_format } = require('./js/validate');
 const { UID_FORMAT, uid_formalize_le_hex } = require('./js/uid');
 const STATE = require('./js/state');
 const { addRecord, getLastRecord, getRecords } = require('./model/data');
@@ -254,6 +254,9 @@ function sm(e) {
           next_state = STATE.ID_SCAN_INIT;
         } else if (validate_uid_format(state.id_scan)) {
           addRecord(newRecord(config, getLastRecord(), state, 'uid'));
+          next_state = STATE.ID_SCAN_INIT;
+        } else if (validate_cardid_format(state.id_scan)) {
+          addRecord(newRecord(config, getLastRecord(), state, 'cardid'));
           next_state = STATE.ID_SCAN_INIT;
         } else {
           addRecord(newRecord(config, getLastRecord(), state, 'invalid'));
