@@ -1,8 +1,10 @@
 const config = require('./config');
 const Store = require('electron-store');
 
+const app = require('electron').remote.app;
+
 const data = new Store({
-  name: 'id-sentry-data-' + config.domain_id,
+  name: 'id-sentry-data-' + config.node_id,
   encryptionKey: config.enable_encrypt_data ? config.login_pwd_hash : null
 });
 

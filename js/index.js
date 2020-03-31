@@ -4,10 +4,8 @@ const { validate_id_format, validate_uid_format } = require('./js/validate');
 const { UID_FORMAT, uid_formalize_le_hex } = require('./js/uid');
 const STATE = require('./js/state');
 const { addRecord, getLastRecord } = require('./model/data');
-const { domain_id2text } = require('./model/domain');
-const { STRINGS_ID2EN } = require('./resource/strings');
-
-const STRINGS = ST;
+const { node_name } = require('./model/node_name');
+const TEXT = require('./res/strings');
 
 const state = {
   state: '',
@@ -25,12 +23,16 @@ function newRecord(config, last_record, state, scan_type) {
   const last_digest =
     (last_record && last_record.scan_value) || config.login_id_hash;
   const record = {
-    domain: config.domain_id,
+    version: 1,
+    node_id: config.node_id,
     local_date: dt.toLocaleString(),
     json_date: dt.toJSON(),
     reader_type: state.uid_format,
     scan_type,
-    scan_value: hash(config.domain_id + last_digest + state.id_scan)
+    scan_value: config.enable_hash_data
+      ? hash(config.node_id + last_digest + state.id_scan)
+      : state.id_scan,
+    hashed: config.enable_hash_data
   };
   return record;
 }
@@ -38,9 +40,9 @@ function newRecord(config, last_record, state, scan_type) {
 window.$ = window.jQuery = require('jquery');
 
 $(document).ready(() => {
-  $('#domain').text(domain_id2text(config.domain_id));
-  state.state = STATE.ID_WAITING_ALPHABET;
-  render();
+  $('#node').text(node_name(config.node_id));
+  state.state = STATE.INIT;
+  state_fast_forwarding();
 });
 
 document.addEventListener('keydown', e => {});
@@ -48,18 +50,67 @@ document.addEventListener('keydown', e => {});
 document.addEventListener('keyup', e => sm(e));
 
 function challenge_id(id) {
-  return hash(config.domain_id + id) == config.login_id_hash;
+  return config.login_ids_hash.includes(
+    hash(config.node_id + config.nonce + id)
+  );
 }
 
 function challenge_uid(uid) {
-  return hash(config.domain_id + uid) == config.login_uid_hash;
+  return config.login_uids_hash.includes(
+    hash(config.node_id + config.nonce + uid)
+  );
 }
 
 function challenge_pwd(pwd) {
-  return hash(config.domain_id + pwd) == config.login_pwd_hash;
+  return hash(config.node_id + config.nonce + pwd) == config.login_pwd_hash;
+}
+
+function state_fast_forwarding() {
+  let next_state = state.state;
+
+  if (next_state == STATE.INIT) {
+    if (config.login_ids_hash && config.login_ids_hash.length != 0) {
+      next_state = STATE.ID_WAITING_ALPHABET;
+    } else {
+      next_state = STATE.UID_WAITING_INIT;
+    }
+  }
+  if (next_state == STATE.UID_WAITING_INIT) {
+    if (
+      (!config.login_uids_hash || config.login_uids_hash.length == 0) &&
+      config.reader_type != ''
+    ) {
+      state.uid_format = config.reader_type;
+      next_state = STATE.PWD_WAITING_INIT;
+    }
+  }
+  if (next_state == STATE.PWD_WAITING_INIT) {
+    if (!config.login_pwd_hash || config.login_pwd_hash == '') {
+      next_state = STATE.ID_SCAN_INIT;
+    }
+  }
+  if (next_state == STATE.UID_INVALID) {
+    next_state = STATE.ID_WAITING_ALPHABET;
+  }
+  if (next_state == STATE.UID_INVALID_CONFIG) {
+    next_state = STATE.DEINIT;
+  }
+  if (next_state == STATE.PWD_INVALID) {
+    next_state = STATE.ID_WAITING_ALPHABET;
+  }
+  if (next_state == STATE.ID_SCAN_INVALID) {
+    next_state = STATE.ID_SCAN_INIT;
+  }
+
+  if (next_state != state.state) {
+    state.state = next_state;
+    render();
+  }
 }
 
 function sm(e) {
+  state_fast_forwarding();
+
   let next_state = state.state;
 
   switch (state.state) {
@@ -78,9 +129,10 @@ function sm(e) {
     case STATE.ID_WAITING_NUMBER:
       if (e.keyCode == 13) {
         next_state = STATE.ID_INVALID;
-      } else if (e.keyCode >= 48 && e.keyCode <= 57) {
-        state.login.id += e.code.slice(-1);
-      } else if (e.keyCode >= 96 && e.keyCode <= 105) {
+      } else if (
+        (e.keyCode >= 48 && e.keyCode <= 57) ||
+        (e.keyCode >= 96 && e.keyCode <= 105)
+      ) {
         state.login.id += e.code.slice(-1);
       }
 
@@ -120,7 +172,6 @@ function sm(e) {
         (e.keyCode >= 96 && e.keyCode <= 105)
       ) {
         state.login.uid += e.code.slice(-1);
-        next_state = STATE.UID_WAITING;
       } else if (e.keyCode == 13) {
         if (!validate_uid_format(state.login.uid)) {
           next_state = STATE.UID_INVALID;
@@ -130,10 +181,10 @@ function sm(e) {
           for (let format in UID_FORMAT) {
             if (challenge_uid(uid_formalize_le_hex(state.login.uid, format))) {
               uid_format_accepts.push(format);
-              state.uid_format = format;
             }
           }
           if (uid_format_accepts.length == 1) {
+            state.uid_format = uid_format_accepts[0];
             next_state = STATE.PWD_WAITING_INIT;
           } else if (uid_format_accepts.length == 0) {
             next_state = STATE.UID_INVALID;
@@ -197,6 +248,7 @@ function sm(e) {
           addRecord(newRecord(config, getLastRecord(), state, 'uid'));
           next_state = STATE.ID_SCAN_INIT;
         } else {
+          addRecord(newRecord(config, getLastRecord(), state, 'invalid'));
           next_state = STATE.ID_SCAN_INVALID;
         }
       }
@@ -205,8 +257,12 @@ function sm(e) {
       break;
   }
 
-  state.state = next_state;
-  render();
+  if (state.state != next_state) {
+    state.state = next_state;
+    render();
+  }
+
+  state_fast_forwarding();
 }
 
 function render() {
@@ -215,63 +271,56 @@ function render() {
       $('#info').text('');
       break;
     case STATE.DEINIT:
-      $('#info').text('End of Program');
+      $('#info').text(TEXT.END_OF_PROGRAM);
       break;
     case STATE.ID_WAITING_ALPHABET:
-      $('#info').text(STRINGS.SCAN_ID_CARD);
+      $('#info').text(TEXT.SCAN_ID_CARD);
       break;
     case STATE.ID_WAITING_NUMBER:
-      $('#info').text('Receiving Identification card:' + state.login.id);
+      $('#info').text(TEXT.SCAN_ID_CARD);
       $('#warning').text('');
       break;
     case STATE.ID_WAITING_ENTER:
-      $('#info').text('Waiting Enter...');
+      $('#info').text(TEXT.SCAN_ID_CARD);
       break;
     case STATE.ID_INVALID:
-      $('#warning').text('Invalid ID');
+      $('#warning').text(TEXT.INVALID_ID);
       state.state = STATE.ID_WAITING_ALPHABET;
       render();
       break;
     case STATE.UID_WAITING_INIT:
-      $('#info').text('Scan your RFID card');
+      $('#info').text(TEXT.SCAN_RFID_CARD);
       break;
     case STATE.UID_WAITING:
-      $('#info').text('Receiving RFID card UID:' + state.login.uid);
+      $('#info').text(TEXT.SCAN_RFID_CARD);
       $('#warning').text('');
       break;
     case STATE.UID_INVALID:
-      $('#warning').text('Invalid UID');
-      state.state = STATE.ID_WAITING_ALPHABET;
-      render();
+      $('#warning').text(TEXT.INVALID_UID);
       break;
     case STATE.UID_INVALID_CONFIG:
-      $('#warning').text('Invalid UID in config');
-      state.state = STATE.DEINIT;
-      render();
+      $('#warning').text(TEXT.INVALID_UID_IN_CONFIG);
       break;
     case STATE.PWD_WAITING_INIT:
-      $('#info').text('Scan the password');
+      $('#info').text(TEXT.SCAN_PASSWORD);
       $('#warning').text('');
       break;
     case STATE.PWD_WAITING:
-      $('#info').text('Getting Password:' + '*'.repeat(state.login.pwd.length));
       break;
     case STATE.PWD_INVALID:
-      $('#warning').text('Invalid password');
+      $('#warning').text(TEXT.INVALID_PASSWORD);
       state.state = STATE.ID_WAITING_ALPHABET;
       render();
       break;
     case STATE.ID_SCAN_INIT:
-      $('#info').text('Scan your ID or UID');
+      $('#info').text(TEXT.SCAN_INIT);
       break;
     case STATE.ID_SCAN:
-      $('#info').text('Reading:' + state.id_scan);
+      $('#info').text(TEXT.SCAN_WAITING);
       $('#warning').text('');
       break;
     case STATE.ID_SCAN_INVALID:
-      $('#warning').text('Invalid ID or UID');
-      state.state = STATE.ID_SCAN_INIT;
-      render();
+      $('#warning').text(TEXT.INVALID_ID_OR_UID);
       break;
     default:
       break;

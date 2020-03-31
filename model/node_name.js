@@ -2,7 +2,7 @@
 // AAA: administrative agency id
 // BBB: building id
 // CC: entry id
-function domain_id2text(id) {
+function node_name(id) {
   return {
     '000-000-00': '登記處',
     '001-001-01': '市府大樓前門登記處',
@@ -10,4 +10,4 @@ function domain_id2text(id) {
   }[id];
 }
 
-module.exports = { domain_id2text };
+module.exports = { node_name };
