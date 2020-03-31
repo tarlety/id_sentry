@@ -4,7 +4,7 @@ const { validate_id_format, validate_uid_format } = require('./js/validate');
 const { UID_FORMAT, uid_formalize_le_hex } = require('./js/uid');
 const STATE = require('./js/state');
 const { addRecord, getLastRecord } = require('./model/data');
-const { node_name } = require('./model/node_name');
+const { node_name } = require('./res/node_name');
 const TEXT = require('./res/strings');
 
 const state = {
@@ -76,11 +76,8 @@ function state_fast_forwarding() {
     }
   }
   if (next_state == STATE.UID_WAITING_INIT) {
-    if (
-      (!config.login_uids_hash || config.login_uids_hash.length == 0) &&
-      config.reader_type != ''
-    ) {
-      state.uid_format = config.reader_type;
+    if (!config.login_uids_hash || config.login_uids_hash.length == 0) {
+      state.uid_format = '';
       next_state = STATE.PWD_WAITING_INIT;
     }
   }
