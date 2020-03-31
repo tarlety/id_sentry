@@ -276,7 +276,7 @@ function sm(e) {
       }
       break;
     default:
-      next_state = STATE.END_OF_PROGRAM;
+      next_state = STATE.DEINIT;
       break;
   }
 
