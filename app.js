@@ -3,9 +3,7 @@ const path = require('path');
 const url = require('url');
 const config = require('./model/config');
 
-// Wait until the app is ready
 app.once('ready', () => {
-  // Create a new window
   const window = new BrowserWindow({
     titleBarStyle: 'hiddenInset',
     backgroundColor: '#333',
@@ -31,10 +29,4 @@ app.once('ready', () => {
   window.once('ready-to-show', () => {
     window.show();
   });
-
-  if (config.prod) {
-    window.on('blur', () => {
-      window.focus();
-    });
-  }
 });

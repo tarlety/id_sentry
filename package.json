@@ -1,5 +1,6 @@
 {
   "name": "id-sentry",
+  "productName": "Electron ID Sentry",
   "version": "1.0.0",
   "description": "Simple Application to Record ID",
   "repository": "",

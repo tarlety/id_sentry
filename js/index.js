@@ -4,6 +4,10 @@ const { validate_id_format, validate_uid_format } = require('./js/validate');
 const { UID_FORMAT, uid_formalize_le_hex } = require('./js/uid');
 const STATE = require('./js/state');
 const { addRecord, getLastRecord } = require('./model/data');
+const { domain_id2text } = require('./model/domain');
+const { STRINGS_ID2EN } = require('./resource/strings');
+
+const STRINGS = ST;
 
 const state = {
   state: '',
@@ -34,7 +38,7 @@ function newRecord(config, last_record, state, scan_type) {
 window.$ = window.jQuery = require('jquery');
 
 $(document).ready(() => {
-  $('#domain').text(config.domain_id);
+  $('#domain').text(domain_id2text(config.domain_id));
   state.state = STATE.ID_WAITING_ALPHABET;
   render();
 });
@@ -214,7 +218,7 @@ function render() {
       $('#info').text('End of Program');
       break;
     case STATE.ID_WAITING_ALPHABET:
-      $('#info').text('Scan your Identification card');
+      $('#info').text(STRINGS.SCAN_ID_CARD);
       break;
     case STATE.ID_WAITING_NUMBER:
       $('#info').text('Receiving Identification card:' + state.login.id);
