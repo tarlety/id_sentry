@@ -3,7 +3,7 @@ const hash = require('./js/challenge');
 const { validate_id_format, validate_uid_format } = require('./js/validate');
 const { UID_FORMAT, uid_formalize_le_hex } = require('./js/uid');
 const STATE = require('./js/state');
-const { addRecord, getLastRecord } = require('./model/data');
+const { addRecord, getLastRecord, getRecords } = require('./model/data');
 const { node_name } = require('./res/node_name');
 const TEXT = require('./res/strings');
 
@@ -35,6 +35,14 @@ function newRecord(config, last_record, state, scan_type) {
     hashed: config.enable_hash_data
   };
   return record;
+}
+
+function countValidRecords() {
+  const records = getRecords();
+  const valid_records = records.filter(record => {
+    return record.scan_type == 'id' || record.scan_type == 'uid';
+  });
+  return valid_records.length;
 }
 
 window.$ = window.jQuery = require('jquery');
@@ -311,15 +319,22 @@ function render() {
       break;
     case STATE.ID_SCAN_INIT:
       $('#info').text(TEXT.SCAN_INIT);
+      $('#info').removeClass('info-scanning');
       break;
     case STATE.ID_SCAN:
       $('#info').text(TEXT.SCAN_WAITING);
+      $('#info').addClass('info-scanning');
       $('#warning').text('');
       break;
     case STATE.ID_SCAN_INVALID:
+      $('#info').text('');
+      $('#info').removeClass('info-scanning');
       $('#warning').text(TEXT.INVALID_ID_OR_UID);
       break;
     default:
       break;
   }
+  $('#count').text(
+    TEXT.SCAN_COUNT_PRE + countValidRecords() + TEXT.SCAN_COUNT_POST
+  );
 }

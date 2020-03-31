@@ -17,7 +17,16 @@ body {
   font-size: 2cm;
 }
 
+.info-scanning {
+  color: green;
+}
+
 #warning {
   font-size: 2cm;
   color: red;
 }
+
+#count {
+  font-size: 1cm;
+}
+
