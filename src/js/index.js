@@ -49,7 +49,11 @@ function newRecord(config, last_record, state, scan_type) {
 function countValidRecords() {
   const records = getRecords();
   const valid_records = records.filter(record => {
-    return record.scan_type == 'id' || record.scan_type == 'uid';
+    return (
+      record.scan_type == 'id' ||
+      record.scan_type == 'uid' ||
+      record.scan_type == 'cardid'
+    );
   });
   return valid_records.length;
 }

@@ -10,11 +10,11 @@ body {
 }
 
 #node {
-  font-size: 3cm;
+  font-size: 2.5cm;
 }
 
 #info {
-  font-size: 2cm;
+  font-size: 1.5cm;
 }
 
 .info-scanning {
@@ -22,7 +22,7 @@ body {
 }
 
 #warning {
-  font-size: 2cm;
+  font-size: 1.5cm;
   color: red;
 }
 

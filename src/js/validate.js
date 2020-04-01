@@ -11,7 +11,7 @@ function validate_id_format(id) {
   const ix = table.indexOf(id[0]);
   if (ix == -1) return false;
 
-  let sum = (ix + 10) / 10 + ((ix + 10) % 10) * 9;
+  let sum = parseInt((ix + 10) / 10) + ((ix + 10) % 10) * 9;
   for (let i = 1; i < 10; i++) {
     const c = parseInt(id[i]);
     if (isNaN(c)) return false;
@@ -28,10 +28,12 @@ function validate_uid_format(uid) {
 }
 
 function validate_cardid_format(cardid) {
-  if (cardid.length == 12 || cardid.length == 16) {
-    if ( cardid.replace(/[0-9]/g, '') == '') return true;
-  }
+  if (cardid.length == 16 && cardid.replace(/[0-9]/g, '') == '') return true;
   return false;
 }
 
-module.exports = { validate_id_format, validate_uid_format, validate_cardid_format };
+module.exports = {
+  validate_id_format,
+  validate_uid_format,
+  validate_cardid_format
+};
