@@ -7,7 +7,7 @@ app.once('ready', () => {
   const window = new BrowserWindow({
     titleBarStyle: 'hiddenInset',
     backgroundColor: '#333',
-    icon: __dirname + '/res/128x128.png',
+    icon: __dirname + '/res/256x256.png',
     show: false,
     frame: false
   });
