@@ -1,3 +1,4 @@
+const commit = require('../commit.js');
 const config = require('./model/config');
 const hash = require('./js/challenge');
 const {
@@ -63,6 +64,7 @@ window.$ = window.jQuery = require('jquery');
 $(document).ready(() => {
   $('#node').text(node_name(config.node_id));
   state.state = STATE.INIT;
+  render();
   state_fast_forwarding();
 });
 
@@ -131,8 +133,6 @@ function state_fast_forwarding() {
 }
 
 function sm(e) {
-  state_fast_forwarding();
-
   let next_state = state.state;
 
   switch (state.state) {
@@ -295,7 +295,13 @@ function sm(e) {
 function render() {
   switch (state.state) {
     case STATE.INIT:
+      const dt = new Date(commit.date);
       $('#info').text('');
+      $('#commit').text(
+        `${commit.number}${
+          commit.developing ? '+' : ''
+        }: ${dt.toLocaleDateString()} ${dt.toLocaleTimeString()}`
+      );
       break;
     case STATE.DEINIT:
       $('#info').text(TEXT.END_OF_PROGRAM);

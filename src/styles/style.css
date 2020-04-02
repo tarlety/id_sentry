@@ -30,3 +30,8 @@ body {
   font-size: 1cm;
 }
 
+#commit.right {
+  color: #222;
+  float: right;
+  font-size: small;
+}
