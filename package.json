@@ -18,7 +18,8 @@
     },
     "win": {
       "target": [
-        "squirrel"
+        "portable",
+        "zip"
       ],
       "icon": "src/res/256x256.png"
     }
@@ -28,7 +29,7 @@
     "start": "npm run update:commit && electron .",
     "package": "npm-run-all package:*",
     "package:linux": "npm run update:commit && electron-builder build --linux",
-    "package:win": "npm run update:commit && electron-builder build --win portable"
+    "package:win": "npm run update:commit && electron-builder build --win"
   },
   "license": "ISC",
   "devDependencies": {

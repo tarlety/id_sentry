@@ -6,9 +6,26 @@ let data;
 
 function initRecords(key) {
   const dt = new Date();
+  const name = `id-sentry-data_${config.node_id}_${dt.getFullYear()}-${(
+    dt.getMonth() + 1
+  )
+    .toString()
+    .padStart(2, '0')}-${dt
+    .getDate()
+    .toString()
+    .padStart(2, '0')}_${dt
+    .getHours()
+    .toString()
+    .padStart(2, '0')}-${dt
+    .getMinutes()
+    .toString()
+    .padStart(2, '0')}-${dt
+    .getSeconds()
+    .toString()
+    .padStart(2, '0')}`;
 
   data = new Store({
-    name: 'id-sentry-data-' + config.node_id + '-' + dt.toJSON(),
+    name,
     encryptionKey: config.enable_encrypt_data ? key : null,
     schema: {
       version: { type: 'number', maximum: 100, minimum: 1, default: 1 },
