@@ -280,7 +280,6 @@ function sm(e) {
       }
       break;
     default:
-      next_state = STATE.DEINIT;
       break;
   }
 
