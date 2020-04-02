@@ -31,7 +31,7 @@
     "package:linux": "npm run update:commit && electron-builder build --linux",
     "package:win": "npm run update:commit && electron-builder build --win"
   },
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "electron": "^3.0.2",
     "electron-builder": "^22.4.1",
