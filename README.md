@@ -2,14 +2,15 @@
 
 - Develop: ```npm install && npm start```
 - Deployment: ```npm run package```
-  - Windows Executable: *.exe 
-  - Linux Executable: *.AppImage
+  - Windows Executable: dist/*.exe 
+  - Linux Executable: dist/*.AppImage
 - Find store at ~/.config/ElectronIDSentry/
 
 ## Going further
 
+- An interface to choose node_id. 
 - Automatically upgrade.
-- Function to generate config.
-- Function to manage, decrypt, convert json data files.
+- Be able to generate config.
+- Be able to manage, decrypt, convert json data files.
 - Any suggestions are welcome.
 
