@@ -1,3 +1,4 @@
+'use strict';
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
 const url = require('url');
@@ -9,7 +10,7 @@ app.once('ready', () => {
     backgroundColor: '#333',
     icon: __dirname + '/res/256x256.png',
     show: false,
-    frame: false
+    frame: false,
   });
 
   window.setFullScreen(true);
@@ -23,7 +24,7 @@ app.once('ready', () => {
     url.format({
       pathname: path.join(__dirname, 'index.html'),
       protocol: 'file:',
-      slashes: true
+      slashes: true,
     })
   );
 

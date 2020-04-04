@@ -1,3 +1,4 @@
+'use strict';
 const TEXT = {
   SCAN_ID_CARD: '掃描管理者的身份證條碼',
   INVALID_ID: '非管理者身份證',
@@ -12,7 +13,7 @@ const TEXT = {
   INVALID_ID_OR_UID: '無法識別的身份證或晶片卡',
   SCAN_COUNT_PRE: '簽到成功次數: ',
   SCAN_COUNT_POST: ' 次',
-  END_OF_PROGRAM: '程式結束'
+  END_OF_PROGRAM: '程式結束',
 };
 
 module.exports = TEXT;

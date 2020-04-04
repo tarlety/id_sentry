@@ -1,3 +1,4 @@
+'use strict';
 const config = require('./config');
 const Store = require('electron-store');
 
@@ -19,10 +20,7 @@ function initRecords(key) {
     .padStart(2, '0')}-${dt
     .getMinutes()
     .toString()
-    .padStart(2, '0')}-${dt
-    .getSeconds()
-    .toString()
-    .padStart(2, '0')}`;
+    .padStart(2, '0')}-${dt.getSeconds().toString().padStart(2, '0')}`;
 
   data = new Store({
     name,
@@ -35,8 +33,8 @@ function initRecords(key) {
       reader_type: { type: 'string' },
       scan_type: { type: 'string' },
       scan_value: { type: 'string' },
-      hashed: { type: 'boolean' }
-    }
+      hashed: { type: 'boolean' },
+    },
   });
 
   records = data.get('records') || [];

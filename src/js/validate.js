@@ -1,3 +1,4 @@
+'use strict';
 // references:
 //  - http://www1.mtjh.kh.edu.tw/~t394/math/g1/person.htm
 
@@ -35,5 +36,5 @@ function validate_cardid_format(cardid) {
 module.exports = {
   validate_id_format,
   validate_uid_format,
-  validate_cardid_format
+  validate_cardid_format,
 };

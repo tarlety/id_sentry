@@ -1,10 +1,11 @@
+'use strict';
 const commit = require('../commit.js');
 const config = require('./model/config');
 const hash = require('./js/challenge');
 const {
   validate_id_format,
   validate_uid_format,
-  validate_cardid_format
+  validate_cardid_format,
 } = require('./js/validate');
 const { UID_FORMAT, uid_formalize_le_hex } = require('./js/uid');
 const STATE = require('./js/state');
@@ -12,7 +13,7 @@ const {
   initRecords,
   addRecord,
   getLastRecord,
-  getRecords
+  getRecords,
 } = require('./model/data');
 const { node_name } = require('./res/node_name');
 const TEXT = require('./res/strings');
@@ -22,10 +23,10 @@ const state = {
   login: {
     id: '',
     uid: '',
-    pwd: ''
+    pwd: '',
   },
   uid_format: '',
-  id_scan: ''
+  id_scan: '',
 };
 
 function newRecord(config, last_record, state, scan_type) {
@@ -42,14 +43,14 @@ function newRecord(config, last_record, state, scan_type) {
     scan_value: config.enable_hash_data
       ? hash(config.node_id + last_digest + state.id_scan)
       : state.id_scan,
-    hashed: config.enable_hash_data
+    hashed: config.enable_hash_data,
   };
   return record;
 }
 
 function countValidRecords() {
   const records = getRecords();
-  const valid_records = records.filter(record => {
+  const valid_records = records.filter((record) => {
     return (
       record.scan_type == 'id' ||
       record.scan_type == 'uid' ||
@@ -68,9 +69,9 @@ $(document).ready(() => {
   state_fast_forwarding();
 });
 
-document.addEventListener('keydown', e => {});
+document.addEventListener('keydown', (e) => {});
 
-document.addEventListener('keyup', e => sm(e));
+document.addEventListener('keyup', (e) => sm(e));
 
 function challenge_id(id) {
   return config.login_ids_hash.includes(
