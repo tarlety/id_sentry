@@ -31,8 +31,7 @@ const state = {
 
 function newRecord(config, last_record, state, scan_type) {
   const dt = new Date();
-  const last_digest =
-    (last_record && last_record.scan_value) || config.login_id_hash;
+  const last_digest = (last_record && last_record.scan_value) || config.nonce;
   const record = {
     version: 1,
     node_id: config.node_id,
@@ -51,11 +50,7 @@ function newRecord(config, last_record, state, scan_type) {
 function countValidRecords() {
   const records = getRecords();
   const valid_records = records.filter((record) => {
-    return (
-      record.scan_type == 'id' ||
-      record.scan_type == 'uid' ||
-      record.scan_type == 'cardid'
-    );
+    return record.scan_type != 'invalid';
   });
   return valid_records.length;
 }
