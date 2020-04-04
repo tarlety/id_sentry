@@ -1,3 +1,11 @@
+## Features
+
+- a simple application to record id, uid, and card number.
+- validate id, uid, and card numbers.
+- optional secure login options: id, uis, and passwords.
+- optional secure by electron-store aes encryption.
+- optional secure by hash chain.
+
 ## Getting started
 
 - Develop: ```npm install && npm start```
