@@ -28,6 +28,16 @@
   - Windows: %APPDATA%\ElectronIDSentry
   - Linux: ~/.config/ElectronIDSentry
 
+## Source Code Management
+
+- Branches:
+  - master: the latest code branch under developing, shall be production ready.
+  - release: formal releases and rc releases.
+  - dev-feature: under developing feature.
+- Code Structure:
+  - src: the electron app entry point.
+  - scripts: help to install or execute specific tasks in production environment.
+
 ## Going further
 
 - An interface to choose node_id. 
