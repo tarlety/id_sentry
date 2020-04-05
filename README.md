@@ -1,5 +1,6 @@
 [![platform](https://img.shields.io/badge/platform-linux%2Fwindows-green.svg)](https://github.com/tarlety/id_sentry)
 [![License](https://img.shields.io/:license-mit-blue.svg)](https://github.com/tarlety/id_sentry/blob/master/LICENSE)
+[![Release Version](https://img.shields.io/github/v/release/tarlety/id_sentry?sort=semver)](https://github.com/tarlety/id_sentry/releases)
 [![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=tarlety_id_sentry&branch=master&metric=bugs)](https://sonarcloud.io/dashboard?id=tarlety_id_sentry)
 [![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=tarlety_id_sentry&branch=master&metric=code_smells)](https://sonarcloud.io/dashboard?id=tarlety_id_sentry)
 [![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=tarlety_id_sentry&branch=master&metric=coverage)](https://sonarcloud.io/dashboard?id=tarlety_id_sentry)
