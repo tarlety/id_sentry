@@ -21,8 +21,8 @@
 ## Features
 
 - A simple application to record reader responses.
-- Be able to validate id, uid, and card numbers.
-- Optional secure login options: id, uis, and passwords.
+- Be able to validate id, uid, card number formats.
+- Optional secure login options: id, uid, and passwords.
 - Optional secure option: use aes to encrypt store.
 - Optional secure option: hash reader responses.
 - Supported platforms: Linux, Windows.
