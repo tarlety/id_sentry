@@ -9,6 +9,7 @@
 [![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=tarlety_id_sentry&branch=master&metric=security_rating)](https://sonarcloud.io/dashboard?id=tarlety_id_sentry)
 [![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=tarlety_id_sentry&branch=master&metric=sqale_index)](https://sonarcloud.io/dashboard?id=tarlety_id_sentry)
 [![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=tarlety_id_sentry&branch=master&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=tarlety_id_sentry)
+[![Snyk Known Vulnerabilities](https://snyk.io/test/github/tarlety/id_sentry/badge.svg)](https://snyk.io/test/github/tarlety/id_sentry)
 
 ## Features
 
