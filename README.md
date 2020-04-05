@@ -18,6 +18,7 @@
 - Optional secure login options: id, uis, and passwords.
 - Optional secure option: use aes to encrypt store.
 - Optional secure option: hash reader responses.
+- Supported platforms: Linux, Windows.
 
 ## Getting started
 
