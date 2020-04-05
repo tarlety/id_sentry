@@ -44,6 +44,6 @@
 - Automatically upgrade.
 - Be able to generate config.
 - Be able to manage, decrypt, convert json data files.
-- Unit test (maybe mocha) and Code coverage (currently not measured).
+- Help wanted: branch dev-unittest implements Unit Test by Jest.
 - Any suggestions are welcome.
 
