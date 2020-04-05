@@ -29,7 +29,7 @@ const state = {
   id_scan: '',
 };
 
-function newRecord(config, last_record, state, scan_type) {
+function newRecord(last_record, scan_type) {
   const dt = new Date();
   const last_digest = (last_record && last_record.scan_value) || config.nonce;
   const record = {
@@ -261,16 +261,16 @@ function sm(e) {
         next_state = STATE.ID_SCAN;
       } else if (e.keyCode == 13) {
         if (validate_id_format(state.id_scan)) {
-          addRecord(newRecord(config, getLastRecord(), state, 'id'));
+          addRecord(newRecord(getLastRecord(), 'id'));
           next_state = STATE.ID_SCAN_INIT;
         } else if (validate_uid_format(state.id_scan)) {
-          addRecord(newRecord(config, getLastRecord(), state, 'uid'));
+          addRecord(newRecord(getLastRecord(), 'uid'));
           next_state = STATE.ID_SCAN_INIT;
         } else if (validate_cardid_format(state.id_scan)) {
-          addRecord(newRecord(config, getLastRecord(), state, 'cardid'));
+          addRecord(newRecord(getLastRecord(), 'cardid'));
           next_state = STATE.ID_SCAN_INIT;
         } else {
-          addRecord(newRecord(config, getLastRecord(), state, 'invalid'));
+          addRecord(newRecord(getLastRecord(), 'invalid'));
           next_state = STATE.ID_SCAN_INVALID;
         }
       }
