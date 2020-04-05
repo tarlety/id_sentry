@@ -12,11 +12,11 @@
 
 ## Features
 
-- a simple application to record id, uid, and card number.
-- validate id, uid, and card numbers.
-- optional secure login options: id, uis, and passwords.
-- optional secure by electron-store aes encryption.
-- optional secure by hash chain.
+- A simple application to record reader responses.
+- Be able to validate id, uid, and card numbers.
+- Optional secure login options: id, uis, and passwords.
+- Optional secure option: use aes to encrypt store.
+- Optional secure option: hash reader responses.
 
 ## Getting started
 
@@ -24,7 +24,9 @@
 - Deployment: ```npm run package```
   - Windows Executable: dist/*.exe 
   - Linux Executable: dist/*.AppImage
-- Find store at ~/.config/ElectronIDSentry/
+- Find store at:
+  - Windows: %APPDATA%\ElectronIDSentry
+  - Linux: ~/.config/ElectronIDSentry
 
 ## Going further
 
