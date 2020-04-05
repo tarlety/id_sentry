@@ -32,5 +32,6 @@
 - Automatically upgrade.
 - Be able to generate config.
 - Be able to manage, decrypt, convert json data files.
+- Unit test (maybe mocha) and Code coverage (currently not measured).
 - Any suggestions are welcome.
 
