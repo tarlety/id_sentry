@@ -37,7 +37,11 @@ function initRecords(key) {
     },
   });
 
-  records = data.get('records') || [];
+  records = data.get('records');
+  if (!records) {
+    records = [];
+    data.set('records', records);
+  }
 }
 
 function getLastRecord() {

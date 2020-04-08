@@ -291,6 +291,7 @@ function render() {
   switch (state.state) {
     case STATE.INIT:
       const dt = new Date(commit.date);
+      document.title = TEXT.TITLE;
       $('#info').text('');
       $('#commit').text(
         `${commit.number}${
