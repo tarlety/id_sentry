@@ -40,7 +40,7 @@ function newRecord(lastRecord, scanType) {
     local_date: dt.toLocaleString(),
     json_date: dt.toJSON(),
     reader_type: state.uid_format,
-    scanType,
+    scan_type: scanType,
     scan_value: config.enable_hash_data
       ? hash(config.node_id + lastDigest + state.id_scan)
       : state.id_scan,
