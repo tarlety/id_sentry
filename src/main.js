@@ -10,6 +10,9 @@ app.once('ready', () => {
     icon: path.join(__dirname, '/res/256x256.png'),
     show: false,
     frame: false,
+    webPreferences: {
+      nodeIntegration: true,
+    },
   });
 
   window.setFullScreen(true);
