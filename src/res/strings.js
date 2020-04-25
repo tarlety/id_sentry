@@ -1,4 +1,3 @@
-'use strict';
 const TEXT = {
   TITLE: '實名制登記離線版',
   SCAN_ID_CARD: '掃描管理者的身份證條碼',

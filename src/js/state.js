@@ -1,4 +1,3 @@
-'use strict';
 // application state
 const STATE = {
   INIT: 'INIT',

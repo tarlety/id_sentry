@@ -1,6 +1,5 @@
-'use strict';
-const config = require('./config');
 const Store = require('electron-store');
+const config = require('./config');
 
 let records;
 let data;

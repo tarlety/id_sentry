@@ -1,4 +1,3 @@
-'use strict';
 // references:
 //  - http://www1.mtjh.kh.edu.tw/~t394/math/g1/person.htm
 

@@ -1,4 +1,3 @@
-'use strict';
 const UID_FORMAT = {
   BE_HEX: 'BE_HEX',
   LE_HEX: 'LE_HEX',

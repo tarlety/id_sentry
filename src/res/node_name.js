@@ -1,4 +1,3 @@
-'use strict';
 // AAA-BBB-CC
 // AAA: administrative agency id
 // BBB: building id

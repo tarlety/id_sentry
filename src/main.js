@@ -1,4 +1,3 @@
-'use strict';
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
 const url = require('url');
@@ -8,7 +7,7 @@ app.once('ready', () => {
   const window = new BrowserWindow({
     titleBarStyle: 'hiddenInset',
     backgroundColor: '#333',
-    icon: __dirname + '/res/256x256.png',
+    icon: path.join(__dirname, '/res/256x256.png'),
     show: false,
     frame: false,
   });

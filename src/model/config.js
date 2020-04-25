@@ -1,4 +1,3 @@
-'use strict';
 const { UID_FORMAT } = require('../js/uid');
 const hash = require('../js/challenge');
 const Store = require('electron-store');

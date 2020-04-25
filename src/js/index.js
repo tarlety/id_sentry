@@ -1,4 +1,3 @@
-'use strict';
 const commit = require('../commit.js');
 const config = require('./model/config');
 const hash = require('./js/challenge');
