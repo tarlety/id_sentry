@@ -2,9 +2,9 @@ const commit = require('../commit.js');
 const config = require('./model/config');
 const hash = require('./js/challenge');
 const {
-  validate_id_format,
-  validate_uid_format,
-  validate_cardid_format,
+  validateIdFormat,
+  validateUidFormat,
+  validateCardidFormat,
 } = require('./js/validate');
 const { UID_FORMAT, formalizeUidAsLeHex } = require('./js/uid');
 const STATE = require('./js/state');
@@ -160,7 +160,7 @@ function sm(e) {
     case STATE.ID_WAITING_ENTER:
       if (
         e.keyCode == 13 &&
-        validate_id_format(state.login.id) &&
+        validateIdFormat(state.login.id) &&
         challenge_id(state.login.id)
       ) {
         next_state = STATE.UID_WAITING_INIT;
@@ -190,7 +190,7 @@ function sm(e) {
       ) {
         state.login.uid += e.code.slice(-1);
       } else if (e.keyCode == 13) {
-        if (!validate_uid_format(state.login.uid)) {
+        if (!validateUidFormat(state.login.uid)) {
           next_state = STATE.UID_INVALID;
         } else {
           state.uid_format = '';
@@ -259,13 +259,13 @@ function sm(e) {
         state.id_scan += e.code.slice(-1);
         next_state = STATE.ID_SCAN;
       } else if (e.keyCode == 13) {
-        if (validate_id_format(state.id_scan)) {
+        if (validateIdFormat(state.id_scan)) {
           addRecord(newRecord(getLastRecord(), 'id'));
           next_state = STATE.ID_SCAN_INIT;
-        } else if (validate_uid_format(state.id_scan)) {
+        } else if (validateUidFormat(state.id_scan)) {
           addRecord(newRecord(getLastRecord(), 'uid'));
           next_state = STATE.ID_SCAN_INIT;
-        } else if (validate_cardid_format(state.id_scan)) {
+        } else if (validateCardidFormat(state.id_scan)) {
           addRecord(newRecord(getLastRecord(), 'cardid'));
           next_state = STATE.ID_SCAN_INIT;
         } else {
