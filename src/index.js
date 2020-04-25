@@ -1,5 +1,6 @@
 /* globals $:false */
 
+const jquery = require('jquery');
 const commit = require('../commit');
 const config = require('./model/config');
 const hash = require('./js/challenge');
@@ -30,18 +31,18 @@ const state = {
   id_scan: '',
 };
 
-function newRecord(last_record, scan_type) {
+function newRecord(lastRecord, scanType) {
   const dt = new Date();
-  const last_digest = (last_record && last_record.scan_value) || config.nonce;
+  const lastDigest = (lastRecord && lastRecord.scan_value) || config.nonce;
   const record = {
     version: 1,
     node_id: config.node_id,
     local_date: dt.toLocaleString(),
     json_date: dt.toJSON(),
     reader_type: state.uid_format,
-    scan_type,
+    scanType,
     scan_value: config.enable_hash_data
-      ? hash(config.node_id + last_digest + state.id_scan)
+      ? hash(config.node_id + lastDigest + state.id_scan)
       : state.id_scan,
     hashed: config.enable_hash_data,
   };
@@ -50,13 +51,14 @@ function newRecord(last_record, scan_type) {
 
 function countValidRecords() {
   const records = getRecords();
-  const valid_records = records.filter((record) => {
-    return record.scan_type !== 'invalid';
+  const validRecords = records.filter((record) => {
+    return record.scanType !== 'invalid';
   });
-  return valid_records.length;
+  return validRecords.length;
 }
 
-window.$ = window.jQuery = require('jquery');
+window.$ = jquery;
+window.jQuery = jquery;
 
 $(document).ready(() => {
   $('#node').text(nodeName(config.node_id));
@@ -86,68 +88,68 @@ function challenge_pwd(pwd) {
 }
 
 function state_fast_forwarding() {
-  let next_state = state.state;
+  let nextState = state.state;
 
-  if (next_state === STATE.INIT) {
+  if (nextState === STATE.INIT) {
     if (config.login_ids_hash && config.login_ids_hash.length !== 0) {
-      next_state = STATE.ID_WAITING_ALPHABET;
+      nextState = STATE.ID_WAITING_ALPHABET;
     } else {
-      next_state = STATE.UID_WAITING_INIT;
+      nextState = STATE.UID_WAITING_INIT;
     }
   }
-  if (next_state === STATE.UID_WAITING_INIT) {
+  if (nextState === STATE.UID_WAITING_INIT) {
     if (!config.login_uids_hash || config.login_uids_hash.length === 0) {
       state.uid_format = '';
-      next_state = STATE.PWD_WAITING_INIT;
+      nextState = STATE.PWD_WAITING_INIT;
     }
   }
-  if (next_state === STATE.PWD_WAITING_INIT) {
+  if (nextState === STATE.PWD_WAITING_INIT) {
     if (!config.login_pwd_hash || config.login_pwd_hash === '') {
       initRecords('');
-      next_state = STATE.ID_SCAN_INIT;
+      nextState = STATE.ID_SCAN_INIT;
     }
   }
-  if (next_state === STATE.ID_INVALID) {
-    next_state = STATE.ID_WAITING_ALPHABET;
+  if (nextState === STATE.ID_INVALID) {
+    nextState = STATE.ID_WAITING_ALPHABET;
   }
-  if (next_state === STATE.UID_INVALID) {
-    next_state = STATE.UID_WAITING_INIT;
+  if (nextState === STATE.UID_INVALID) {
+    nextState = STATE.UID_WAITING_INIT;
   }
-  if (next_state === STATE.UID_INVALID_CONFIG) {
-    next_state = STATE.DEINIT;
+  if (nextState === STATE.UID_INVALID_CONFIG) {
+    nextState = STATE.DEINIT;
   }
-  if (next_state === STATE.PWD_INVALID) {
-    next_state = STATE.PWD_WAITING_INIT;
+  if (nextState === STATE.PWD_INVALID) {
+    nextState = STATE.PWD_WAITING_INIT;
   }
-  if (next_state === STATE.ID_SCAN_INVALID) {
-    next_state = STATE.ID_SCAN_INIT;
+  if (nextState === STATE.ID_SCAN_INVALID) {
+    nextState = STATE.ID_SCAN_INIT;
   }
 
-  if (next_state !== state.state) {
-    state.state = next_state;
+  if (nextState !== state.state) {
+    state.state = nextState;
     render();
   }
 }
 
 function sm(e) {
-  let next_state = state.state;
+  let nextState = state.state;
 
   switch (state.state) {
     case '' || STATE.INIT:
-      next_state = STATE.ID_WAITING_ALPHABET;
+      nextState = STATE.ID_WAITING_ALPHABET;
       break;
     case STATE.ID_WAITING_ALPHABET:
       state.login.id = '';
       if (e.keyCode === 13) {
-        next_state = STATE.ID_INVALID;
+        nextState = STATE.ID_INVALID;
       } else if (e.keyCode >= 65 && e.keyCode <= 90) {
         state.login.id = e.code.slice(-1);
-        next_state = STATE.ID_WAITING_NUMBER;
+        nextState = STATE.ID_WAITING_NUMBER;
       }
       break;
     case STATE.ID_WAITING_NUMBER:
       if (e.keyCode === 13) {
-        next_state = STATE.ID_INVALID;
+        nextState = STATE.ID_INVALID;
       } else if (
         (e.keyCode >= 48 && e.keyCode <= 57) ||
         (e.keyCode >= 96 && e.keyCode <= 105)
@@ -156,7 +158,7 @@ function sm(e) {
       }
 
       if (state.login.id.length === 10) {
-        next_state = STATE.ID_WAITING_ENTER;
+        nextState = STATE.ID_WAITING_ENTER;
       }
       break;
     case STATE.ID_WAITING_ENTER:
@@ -165,13 +167,13 @@ function sm(e) {
         validateIdFormat(state.login.id) &&
         challenge_id(state.login.id)
       ) {
-        next_state = STATE.UID_WAITING_INIT;
+        nextState = STATE.UID_WAITING_INIT;
       } else {
-        next_state = STATE.ID_INVALID;
+        nextState = STATE.ID_INVALID;
       }
       break;
     case STATE.ID_INVALID:
-      next_state = STATE.ID_WAITING_ALPHABET;
+      nextState = STATE.ID_WAITING_ALPHABET;
       break;
     case STATE.UID_WAITING_INIT:
       state.login.uid = '';
@@ -181,7 +183,7 @@ function sm(e) {
         (e.keyCode >= 96 && e.keyCode <= 105)
       ) {
         state.login.uid = e.code.slice(-1);
-        next_state = STATE.UID_WAITING;
+        nextState = STATE.UID_WAITING;
       }
       break;
     case STATE.UID_WAITING:
@@ -193,7 +195,7 @@ function sm(e) {
         state.login.uid += e.code.slice(-1);
       } else if (e.keyCode === 13) {
         if (!validateUidFormat(state.login.uid)) {
-          next_state = STATE.UID_INVALID;
+          nextState = STATE.UID_INVALID;
         } else {
           state.uid_format = '';
           let uid_format_accepts = [];
@@ -204,11 +206,11 @@ function sm(e) {
           }
           if (uid_format_accepts.length === 1) {
             state.uid_format = uid_format_accepts[0];
-            next_state = STATE.PWD_WAITING_INIT;
+            nextState = STATE.PWD_WAITING_INIT;
           } else if (uid_format_accepts.length === 0) {
-            next_state = STATE.UID_INVALID;
+            nextState = STATE.UID_INVALID;
           } else {
-            next_state = STATE.UID_INVALID_CONFIG;
+            nextState = STATE.UID_INVALID_CONFIG;
           }
         }
       }
@@ -221,7 +223,7 @@ function sm(e) {
         (e.keyCode >= 96 && e.keyCode <= 105)
       ) {
         state.login.pwd = e.code.slice(-1);
-        next_state = STATE.PWD_WAITING;
+        nextState = STATE.PWD_WAITING;
       }
       break;
     case STATE.PWD_WAITING:
@@ -231,13 +233,13 @@ function sm(e) {
         (e.keyCode >= 96 && e.keyCode <= 105)
       ) {
         state.login.pwd += e.code.slice(-1);
-        next_state = STATE.PWD_WAITING;
+        nextState = STATE.PWD_WAITING;
       } else if (e.keyCode === 13) {
         if (challenge_pwd(state.login.pwd)) {
           initRecords(state.login.pwd);
-          next_state = STATE.ID_SCAN_INIT;
+          nextState = STATE.ID_SCAN_INIT;
         } else {
-          next_state = STATE.PWD_INVALID;
+          nextState = STATE.PWD_INVALID;
         }
       }
       break;
@@ -249,7 +251,7 @@ function sm(e) {
         (e.keyCode >= 96 && e.keyCode <= 105)
       ) {
         state.id_scan = e.code.slice(-1);
-        next_state = STATE.ID_SCAN;
+        nextState = STATE.ID_SCAN;
       }
       break;
     case STATE.ID_SCAN:
@@ -259,20 +261,20 @@ function sm(e) {
         (e.keyCode >= 96 && e.keyCode <= 105)
       ) {
         state.id_scan += e.code.slice(-1);
-        next_state = STATE.ID_SCAN;
+        nextState = STATE.ID_SCAN;
       } else if (e.keyCode === 13) {
         if (validateIdFormat(state.id_scan)) {
           addRecord(newRecord(getLastRecord(), 'id'));
-          next_state = STATE.ID_SCAN_INIT;
+          nextState = STATE.ID_SCAN_INIT;
         } else if (validateUidFormat(state.id_scan)) {
           addRecord(newRecord(getLastRecord(), 'uid'));
-          next_state = STATE.ID_SCAN_INIT;
+          nextState = STATE.ID_SCAN_INIT;
         } else if (validateCardidFormat(state.id_scan)) {
           addRecord(newRecord(getLastRecord(), 'cardid'));
-          next_state = STATE.ID_SCAN_INIT;
+          nextState = STATE.ID_SCAN_INIT;
         } else {
           addRecord(newRecord(getLastRecord(), 'invalid'));
-          next_state = STATE.ID_SCAN_INVALID;
+          nextState = STATE.ID_SCAN_INVALID;
         }
       }
       break;
@@ -280,8 +282,8 @@ function sm(e) {
       break;
   }
 
-  if (state.state !== next_state) {
-    state.state = next_state;
+  if (state.state !== nextState) {
+    state.state = nextState;
     render();
   }
 
