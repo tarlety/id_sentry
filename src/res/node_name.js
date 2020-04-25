@@ -2,7 +2,7 @@
 // AAA: administrative agency id
 // BBB: building id
 // CC: entry id
-function node_name(id) {
+function nodeName(id) {
   return {
     '000-000-00': '登記處',
     '001-001-00': '市府大樓登記處',
@@ -11,4 +11,4 @@ function node_name(id) {
   }[id];
 }
 
-module.exports = { node_name };
+module.exports = { nodeName };

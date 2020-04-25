@@ -14,7 +14,7 @@ const {
   getLastRecord,
   getRecords,
 } = require('./model/data');
-const { node_name } = require('./res/node_name');
+const { nodeName } = require('./res/node_name');
 const TEXT = require('./res/strings');
 
 const state = {
@@ -57,7 +57,7 @@ function countValidRecords() {
 window.$ = window.jQuery = require('jquery');
 
 $(document).ready(() => {
-  $('#node').text(node_name(config.node_id));
+  $('#node').text(nodeName(config.node_id));
   state.state = STATE.INIT;
   render();
   state_fast_forwarding();
