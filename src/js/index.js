@@ -6,7 +6,7 @@ const {
   validate_uid_format,
   validate_cardid_format,
 } = require('./js/validate');
-const { UID_FORMAT, uid_formalize_le_hex } = require('./js/uid');
+const { UID_FORMAT, formalizeUidAsLeHex } = require('./js/uid');
 const STATE = require('./js/state');
 const {
   initRecords,
@@ -196,7 +196,7 @@ function sm(e) {
           state.uid_format = '';
           let uid_format_accepts = [];
           for (let format in UID_FORMAT) {
-            if (challenge_uid(uid_formalize_le_hex(state.login.uid, format))) {
+            if (challenge_uid(formalizeUidAsLeHex(state.login.uid, format))) {
               uid_format_accepts.push(format);
             }
           }

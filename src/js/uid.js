@@ -5,7 +5,7 @@ const UID_FORMAT = {
   LE_DEC: 'LE_DEC',
 };
 
-function uid_formalize_le_hex(uid, format) {
+function formalizeUidAsLeHex(uid, format) {
   // https://www.mifare.net/support/forum/topic/mifare-uid-number/
   switch (format) {
     case UID_FORMAT.BE_HEX:
@@ -26,4 +26,4 @@ function uid_formalize_le_hex(uid, format) {
   }
 }
 
-module.exports = { UID_FORMAT, uid_formalize_le_hex };
+module.exports = { UID_FORMAT, formalizeUidAsLeHex };
