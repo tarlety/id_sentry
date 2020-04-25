@@ -1,4 +1,6 @@
-const commit = require('../commit.js');
+/* globals $:false */
+
+const commit = require('../commit');
 const config = require('./model/config');
 const hash = require('./js/challenge');
 const {
@@ -49,7 +51,7 @@ function newRecord(last_record, scan_type) {
 function countValidRecords() {
   const records = getRecords();
   const valid_records = records.filter((record) => {
-    return record.scan_type != 'invalid';
+    return record.scan_type !== 'invalid';
   });
   return valid_records.length;
 }
@@ -63,7 +65,7 @@ $(document).ready(() => {
   state_fast_forwarding();
 });
 
-document.addEventListener('keydown', (e) => {});
+document.addEventListener('keydown', () => {});
 
 document.addEventListener('keyup', (e) => sm(e));
 
@@ -80,48 +82,48 @@ function challenge_uid(uid) {
 }
 
 function challenge_pwd(pwd) {
-  return hash(config.node_id + config.nonce + pwd) == config.login_pwd_hash;
+  return hash(config.node_id + config.nonce + pwd) === config.login_pwd_hash;
 }
 
 function state_fast_forwarding() {
   let next_state = state.state;
 
-  if (next_state == STATE.INIT) {
-    if (config.login_ids_hash && config.login_ids_hash.length != 0) {
+  if (next_state === STATE.INIT) {
+    if (config.login_ids_hash && config.login_ids_hash.length !== 0) {
       next_state = STATE.ID_WAITING_ALPHABET;
     } else {
       next_state = STATE.UID_WAITING_INIT;
     }
   }
-  if (next_state == STATE.UID_WAITING_INIT) {
-    if (!config.login_uids_hash || config.login_uids_hash.length == 0) {
+  if (next_state === STATE.UID_WAITING_INIT) {
+    if (!config.login_uids_hash || config.login_uids_hash.length === 0) {
       state.uid_format = '';
       next_state = STATE.PWD_WAITING_INIT;
     }
   }
-  if (next_state == STATE.PWD_WAITING_INIT) {
-    if (!config.login_pwd_hash || config.login_pwd_hash == '') {
+  if (next_state === STATE.PWD_WAITING_INIT) {
+    if (!config.login_pwd_hash || config.login_pwd_hash === '') {
       initRecords('');
       next_state = STATE.ID_SCAN_INIT;
     }
   }
-  if (next_state == STATE.ID_INVALID) {
+  if (next_state === STATE.ID_INVALID) {
     next_state = STATE.ID_WAITING_ALPHABET;
   }
-  if (next_state == STATE.UID_INVALID) {
+  if (next_state === STATE.UID_INVALID) {
     next_state = STATE.UID_WAITING_INIT;
   }
-  if (next_state == STATE.UID_INVALID_CONFIG) {
+  if (next_state === STATE.UID_INVALID_CONFIG) {
     next_state = STATE.DEINIT;
   }
-  if (next_state == STATE.PWD_INVALID) {
+  if (next_state === STATE.PWD_INVALID) {
     next_state = STATE.PWD_WAITING_INIT;
   }
-  if (next_state == STATE.ID_SCAN_INVALID) {
+  if (next_state === STATE.ID_SCAN_INVALID) {
     next_state = STATE.ID_SCAN_INIT;
   }
 
-  if (next_state != state.state) {
+  if (next_state !== state.state) {
     state.state = next_state;
     render();
   }
@@ -131,12 +133,12 @@ function sm(e) {
   let next_state = state.state;
 
   switch (state.state) {
-    case '' | STATE.INIT:
+    case '' || STATE.INIT:
       next_state = STATE.ID_WAITING_ALPHABET;
       break;
     case STATE.ID_WAITING_ALPHABET:
       state.login.id = '';
-      if (e.keyCode == 13) {
+      if (e.keyCode === 13) {
         next_state = STATE.ID_INVALID;
       } else if (e.keyCode >= 65 && e.keyCode <= 90) {
         state.login.id = e.code.slice(-1);
@@ -144,7 +146,7 @@ function sm(e) {
       }
       break;
     case STATE.ID_WAITING_NUMBER:
-      if (e.keyCode == 13) {
+      if (e.keyCode === 13) {
         next_state = STATE.ID_INVALID;
       } else if (
         (e.keyCode >= 48 && e.keyCode <= 57) ||
@@ -153,13 +155,13 @@ function sm(e) {
         state.login.id += e.code.slice(-1);
       }
 
-      if (state.login.id.length == 10) {
+      if (state.login.id.length === 10) {
         next_state = STATE.ID_WAITING_ENTER;
       }
       break;
     case STATE.ID_WAITING_ENTER:
       if (
-        e.keyCode == 13 &&
+        e.keyCode === 13 &&
         validateIdFormat(state.login.id) &&
         challenge_id(state.login.id)
       ) {
@@ -189,21 +191,21 @@ function sm(e) {
         (e.keyCode >= 96 && e.keyCode <= 105)
       ) {
         state.login.uid += e.code.slice(-1);
-      } else if (e.keyCode == 13) {
+      } else if (e.keyCode === 13) {
         if (!validateUidFormat(state.login.uid)) {
           next_state = STATE.UID_INVALID;
         } else {
           state.uid_format = '';
           let uid_format_accepts = [];
-          for (let format in UID_FORMAT) {
+          for (const format in UID_FORMAT) {
             if (challenge_uid(formalizeUidAsLeHex(state.login.uid, format))) {
               uid_format_accepts.push(format);
             }
           }
-          if (uid_format_accepts.length == 1) {
+          if (uid_format_accepts.length === 1) {
             state.uid_format = uid_format_accepts[0];
             next_state = STATE.PWD_WAITING_INIT;
-          } else if (uid_format_accepts.length == 0) {
+          } else if (uid_format_accepts.length === 0) {
             next_state = STATE.UID_INVALID;
           } else {
             next_state = STATE.UID_INVALID_CONFIG;
@@ -230,7 +232,7 @@ function sm(e) {
       ) {
         state.login.pwd += e.code.slice(-1);
         next_state = STATE.PWD_WAITING;
-      } else if (e.keyCode == 13) {
+      } else if (e.keyCode === 13) {
         if (challenge_pwd(state.login.pwd)) {
           initRecords(state.login.pwd);
           next_state = STATE.ID_SCAN_INIT;
@@ -258,7 +260,7 @@ function sm(e) {
       ) {
         state.id_scan += e.code.slice(-1);
         next_state = STATE.ID_SCAN;
-      } else if (e.keyCode == 13) {
+      } else if (e.keyCode === 13) {
         if (validateIdFormat(state.id_scan)) {
           addRecord(newRecord(getLastRecord(), 'id'));
           next_state = STATE.ID_SCAN_INIT;
@@ -278,7 +280,7 @@ function sm(e) {
       break;
   }
 
-  if (state.state != next_state) {
+  if (state.state !== next_state) {
     state.state = next_state;
     render();
   }
