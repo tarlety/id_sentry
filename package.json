@@ -27,6 +27,7 @@
   "scripts": {
     "update:commit": "echo \"module.exports={number: '`git log --format='%H' -n 1 | cut -c1-8`'\", > commit.js ; echo \"developing: `test -z \"\\`git status -s\\`\" && echo false || echo true`\", >> commit.js ; echo \"date: '`git log -1 --format=%cd`'}\" >> commit.js",
     "start": "npm run update:commit && electron .",
+    "lint": "eslint src",
     "package": "npm-run-all package:*",
     "package:linux": "npm run update:commit && electron-builder build --linux",
     "package:win": "npm run update:commit && electron-builder build --win"
@@ -35,6 +36,9 @@
   "devDependencies": {
     "electron": "^3.0.2",
     "electron-builder": "^22.4.1",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-plugin-import": "^2.20.2",
     "npm-run-all": "^4.1.5"
   },
   "dependencies": {
