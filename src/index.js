@@ -138,7 +138,8 @@ function sm(e) {
   let nextState = state.state;
 
   switch (state.state) {
-    case '' || STATE.INIT:
+    case '':
+    case STATE.INIT:
       nextState = STATE.ID_WAITING_ALPHABET;
       break;
     case STATE.ID_WAITING_ALPHABET:
