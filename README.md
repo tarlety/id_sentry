@@ -5,7 +5,7 @@
 [![Release Version](https://img.shields.io/github/v/release/tarlety/id_sentry?sort=semver&color=blue)](https://github.com/tarlety/id_sentry/releases)
 [![Release Date](https://img.shields.io/github/release-date-pre/tarlety/id_sentry?color=blue)](https://github.com/tarlety/id_sentry/releases)
 [![Commits Since Latest Release](https://img.shields.io/github/commits-since/tarlety/id_sentry/latest/master?include_prereleases)](https://github.com/tarlety/id_sentry/commits/master)
-[![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=tarlety_id_sentry&branch=master&metric=bugs)](https://sonarcloud.io/dashboard?id=tarlety_id_sentry)
+[![Sonarcloud Status: Bugs](https://sonarcloud.io/api/project_badges/measure?project=tarlety_id_sentry&branch=master&metric=bugs)](https://sonarcloud.io/project/issues?id=tarlety_id_sentry&resolved=false&types=BUG)
 [![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=tarlety_id_sentry&branch=master&metric=code_smells)](https://sonarcloud.io/dashboard?id=tarlety_id_sentry)
 [![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=tarlety_id_sentry&branch=master&metric=coverage)](https://sonarcloud.io/dashboard?id=tarlety_id_sentry)
 [![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=tarlety_id_sentry&branch=master&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=tarlety_id_sentry)
