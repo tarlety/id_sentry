@@ -29,6 +29,9 @@ const state = {
   },
   uid_format: '',
   id_scan: '',
+  fastForwarding: () => {},
+  sm: () => {},
+  render: () => {},
 };
 
 function newRecord(lastRecord, scanType) {
@@ -63,13 +66,13 @@ window.jQuery = jquery;
 $(document).ready(() => {
   $('#node').text(nodeName(config.node_id));
   state.state = STATE.INIT;
-  render();
-  stateFastForwarding();
+  state.render();
+  state.fastForwarding();
 });
 
 document.addEventListener('keydown', () => {});
 
-document.addEventListener('keyup', (e) => sm(e));
+document.addEventListener('keyup', (e) => state.sm(e));
 
 function challengeId(id) {
   return config.login_ids_hash.includes(
@@ -87,7 +90,7 @@ function challengePwd(pwd) {
   return hash(config.node_id + config.nonce + pwd) === config.login_pwd_hash;
 }
 
-function stateFastForwarding() {
+function fastForwarding() {
   let nextState = state.state;
 
   if (nextState === STATE.INIT) {
@@ -127,7 +130,7 @@ function stateFastForwarding() {
 
   if (nextState !== state.state) {
     state.state = nextState;
-    render();
+    state.render();
   }
 }
 
@@ -281,10 +284,10 @@ function sm(e) {
 
   if (state.state !== nextState) {
     state.state = nextState;
-    render();
+    state.render();
   }
 
-  stateFastForwarding();
+  state.fastForwarding();
 }
 
 function render() {
@@ -362,3 +365,7 @@ function render() {
       break;
   }
 }
+
+state.fastForwarding = fastForwarding;
+state.sm = sm;
+state.render = render;
