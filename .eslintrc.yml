@@ -15,3 +15,7 @@ parserOptions:
   ecmaVersion: 2018
 rules:
   prettier/prettier: error
+  prefer-destructuring:
+  - error
+  - object: true
+    array: false

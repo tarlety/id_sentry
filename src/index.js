@@ -64,30 +64,30 @@ $(document).ready(() => {
   $('#node').text(nodeName(config.node_id));
   state.state = STATE.INIT;
   render();
-  state_fast_forwarding();
+  stateFastForwarding();
 });
 
 document.addEventListener('keydown', () => {});
 
 document.addEventListener('keyup', (e) => sm(e));
 
-function challenge_id(id) {
+function challengeId(id) {
   return config.login_ids_hash.includes(
     hash(config.node_id + config.nonce + id)
   );
 }
 
-function challenge_uid(uid) {
+function challengeUid(uid) {
   return config.login_uids_hash.includes(
     hash(config.node_id + config.nonce + uid)
   );
 }
 
-function challenge_pwd(pwd) {
+function challengePwd(pwd) {
   return hash(config.node_id + config.nonce + pwd) === config.login_pwd_hash;
 }
 
-function state_fast_forwarding() {
+function stateFastForwarding() {
   let nextState = state.state;
 
   if (nextState === STATE.INIT) {
@@ -165,7 +165,7 @@ function sm(e) {
       if (
         e.keyCode === 13 &&
         validateIdFormat(state.login.id) &&
-        challenge_id(state.login.id)
+        challengeId(state.login.id)
       ) {
         nextState = STATE.UID_WAITING_INIT;
       } else {
@@ -198,16 +198,13 @@ function sm(e) {
           nextState = STATE.UID_INVALID;
         } else {
           state.uid_format = '';
-          let uid_format_accepts = [];
-          for (const format in UID_FORMAT) {
-            if (challenge_uid(formalizeUidAsLeHex(state.login.uid, format))) {
-              uid_format_accepts.push(format);
-            }
-          }
-          if (uid_format_accepts.length === 1) {
-            state.uid_format = uid_format_accepts[0];
+          const accepts = Object.keys(UID_FORMAT).filter((format) => {
+            return challengeUid(formalizeUidAsLeHex(state.login.uid, format));
+          });
+          if (accepts.length === 1) {
+            state.uid_format = accepts[0];
             nextState = STATE.PWD_WAITING_INIT;
-          } else if (uid_format_accepts.length === 0) {
+          } else if (accepts.length === 0) {
             nextState = STATE.UID_INVALID;
           } else {
             nextState = STATE.UID_INVALID_CONFIG;
@@ -235,7 +232,7 @@ function sm(e) {
         state.login.pwd += e.code.slice(-1);
         nextState = STATE.PWD_WAITING;
       } else if (e.keyCode === 13) {
-        if (challenge_pwd(state.login.pwd)) {
+        if (challengePwd(state.login.pwd)) {
           initRecords(state.login.pwd);
           nextState = STATE.ID_SCAN_INIT;
         } else {
@@ -287,20 +284,23 @@ function sm(e) {
     render();
   }
 
-  state_fast_forwarding();
+  stateFastForwarding();
 }
 
 function render() {
   switch (state.state) {
     case STATE.INIT:
-      const dt = new Date(commit.date);
       document.title = TEXT.TITLE;
       $('#info').text('');
-      $('#commit').text(
-        `${commit.number}${
-          commit.developing ? '+' : ''
-        }: ${dt.toLocaleDateString()} ${dt.toLocaleTimeString()}`
-      );
+      {
+        const dt = new Date(commit.date);
+        // prettier-ignore
+        $('#commit').text(
+          `${commit.number}${commit.developing ? '+' : ''}: ${
+            dt.toLocaleDateString()} ${
+            dt.toLocaleTimeString()}`
+        );
+      }
       break;
     case STATE.DEINIT:
       $('#info').text(TEXT.END_OF_PROGRAM);
