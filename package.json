@@ -32,7 +32,9 @@
     "package:linux": "npm run update:commit && electron-builder build --linux",
     "package:win": "npm run update:commit && electron-builder build --win"
   },
-  "pre-commit": ["lint"],
+  "pre-commit": [
+    "lint"
+  ],
   "license": "MIT",
   "devDependencies": {
     "electron-builder": "^22.4.1",

@@ -20,13 +20,6 @@ function initRecords(key) {
     encryptionKey: config.enable_encrypt_data ? key : null,
     schema: {
       version: { type: 'number', maximum: 100, minimum: 1, default: 1 },
-      node_id: { type: 'string' },
-      local_date: { type: 'string' },
-      json_date: { type: 'string' },
-      reader_type: { type: 'string' },
-      scan_type: { type: 'string' },
-      scan_value: { type: 'string' },
-      hashed: { type: 'boolean' },
     },
   });
 
