@@ -1,56 +1,56 @@
 {
-  "name": "electron-id-sentry",
-  "productName": "ElectronIDSentry",
-  "version": "1.0.0",
-  "description": "Simple Application to Record ID",
-  "repository": "https://github.com/tarlety/id_sentry",
-  "author": "tarlety <tarlety@gmail.com>",
-  "main": "src/main.js",
-  "build": {
-    "appId": "com.electronidsentry.app",
+    "name": "electron-id-sentry",
     "productName": "ElectronIDSentry",
-    "copyright": "Copyright © year ${author}",
-    "linux": {
-      "target": [
-        "AppImage"
-      ],
-      "icon": "src/res/256x256.png"
+    "version": "1.0.0",
+    "description": "Simple Application to Record ID",
+    "repository": "https://github.com/tarlety/id_sentry",
+    "author": "tarlety <tarlety@gmail.com>",
+    "main": "src/main.js",
+    "build": {
+        "appId": "com.electronidsentry.app",
+        "productName": "ElectronIDSentry",
+        "copyright": "Copyright © year ${author}",
+        "linux": {
+            "target": [
+                "AppImage"
+            ],
+            "icon": "src/res/256x256.png"
+        },
+        "win": {
+            "target": [
+                "portable",
+                "zip"
+            ],
+            "icon": "src/res/256x256.png"
+        }
     },
-    "win": {
-      "target": [
-        "portable",
-        "zip"
-      ],
-      "icon": "src/res/256x256.png"
+    "scripts": {
+        "update:commit": "echo \"module.exports={number: '`git log --format='%H' -n 1 | cut -c1-8`'\", > commit.js ; echo \"developing: `test -z \"\\`git status -s\\`\" && echo false || echo true`\", >> commit.js ; echo \"date: '`git log -1 --format=%cd`'}\" >> commit.js",
+        "start": "npm run update:commit && electron .",
+        "lint": "eslint src",
+        "package": "npm-run-all package:*",
+        "package:linux": "npm run update:commit && electron-builder build --linux",
+        "package:win": "npm run update:commit && electron-builder build --win"
+    },
+    "pre-commit": [
+        "lint"
+    ],
+    "license": "MIT",
+    "devDependencies": {
+        "electron-builder": "^22.9.1",
+        "eslint": "^6.8.0",
+        "eslint-config-airbnb-base": "^14.2.1",
+        "eslint-config-prettier": "^6.15.0",
+        "eslint-plugin-import": "^2.22.1",
+        "eslint-plugin-prettier": "^3.2.0",
+        "npm-run-all": "^4.1.5",
+        "pre-commit": "^1.2.2",
+        "prettier": "^2.2.1"
+    },
+    "dependencies": {
+        "crypto": "^1.0.1",
+        "electron": "^11.0.4",
+        "electron-store": "^6.0.1",
+        "jquery": "^3.5.1"
     }
-  },
-  "scripts": {
-    "update:commit": "echo \"module.exports={number: '`git log --format='%H' -n 1 | cut -c1-8`'\", > commit.js ; echo \"developing: `test -z \"\\`git status -s\\`\" && echo false || echo true`\", >> commit.js ; echo \"date: '`git log -1 --format=%cd`'}\" >> commit.js",
-    "start": "npm run update:commit && electron .",
-    "lint": "eslint src",
-    "package": "npm-run-all package:*",
-    "package:linux": "npm run update:commit && electron-builder build --linux",
-    "package:win": "npm run update:commit && electron-builder build --win"
-  },
-  "pre-commit": [
-    "lint"
-  ],
-  "license": "MIT",
-  "devDependencies": {
-    "electron-builder": "^22.4.1",
-    "eslint": "^6.8.0",
-    "eslint-config-airbnb-base": "^14.1.0",
-    "eslint-config-prettier": "^6.11.0",
-    "eslint-plugin-import": "^2.20.2",
-    "eslint-plugin-prettier": "^3.1.3",
-    "npm-run-all": "^4.1.5",
-    "pre-commit": "^1.2.2",
-    "prettier": "^2.0.5"
-  },
-  "dependencies": {
-    "crypto": "^1.0.1",
-    "electron": "^8.5.2",
-    "electron-store": "^5.1.1",
-    "jquery": "^3.5.0"
-  }
 }

@@ -11,7 +11,9 @@ app.once('ready', () => {
     show: false,
     frame: false,
     webPreferences: {
+      devTools: false,
       nodeIntegration: true,
+      enableRemoteModule: true,
     },
   });
 
