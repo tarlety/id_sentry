@@ -1,7 +1,7 @@
 {
     "name": "electron-id-sentry",
     "productName": "ElectronIDSentry",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Simple Application to Record ID",
     "repository": "https://github.com/tarlety/id_sentry",
     "author": "tarlety <tarlety@gmail.com>",
