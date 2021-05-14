@@ -20,7 +20,7 @@ app.once('ready', () => {
   window.setFullScreen(true);
 
   if (config.prod) {
-    // To disable full screen hotkey F11. The default menu bounds F11.
+    // To disable full screen hotkey F11. The default menu binds F11.
     window.setMenu(null);
   }
 
