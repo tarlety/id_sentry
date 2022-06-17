@@ -49,7 +49,7 @@
     },
     "dependencies": {
         "crypto": "^1.0.1",
-        "electron": "^11.1.0",
+        "electron": "^15.5.5",
         "electron-store": "^6.0.1",
         "jquery": "^3.5.1"
     }
